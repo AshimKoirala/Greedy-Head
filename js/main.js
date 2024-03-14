@@ -22,6 +22,8 @@ var coin;
 var gameStarted = false;
 var timer;
 var gameDuration = 15000;
+var endTime;
+var timerText;
 
 function preload() {
   this.load.image("player", "assets/images/default.png");
@@ -43,15 +45,15 @@ function create() {
     startGame();
   });
 
-  // Function to initialize game
+  //initialize game
   const startGame = () => {
     // player sprite
     player = this.physics.add.sprite(0, 650, "player");
     player.setScale(0.2);
-    // to not cross the screen
+    // player physics properties
     player.setCollideWorldBounds(true);
 
-    // initial coin
+    // Create initial coin
     respawnCoin();
 
     // coin count
@@ -66,18 +68,32 @@ function create() {
     // Set the end time for the game
     endTime = this.time.now + gameDuration;
 
-    // game timer
+    // Start the game timer
     timer = this.time.addEvent({
       delay: gameDuration,
       callback: endGame,
       callbackScope: this,
     });
 
+    // Display the timer text
+    timerText = this.add.text(850, 16, "", {
+      fontSize: "32px",
+      fill: "#FFFFFF",
+    });
+
+    // Update the timer display every second
+    this.time.addEvent({
+      delay: 1000,
+      callback: updateTimer,
+      callbackScope: this,
+      loop: true,
+    });
+
     // If player touches coin, score increases and coin reappear in another location
     this.physics.add.collider(player, coin, collectCoin, null, this);
   };
 
-  //to respawn the coin
+  //respawn the coin
   const respawnCoin = () => {
     if (coin) {
       coin.destroy(); // Destroy previous coin
@@ -90,7 +106,7 @@ function create() {
     coin.setScale(0.1);
   };
 
-  // collect coin
+  //coin collection
   const collectCoin = () => {
     coin.disableBody(true, true);
     Totalcoin++;
@@ -98,7 +114,22 @@ function create() {
     respawnCoin(); // Respawn the coin
 
     this.physics.add.collider(player, coin, collectCoin, null, this);
-    //to be able t collect more coin
+  };
+
+  const endGame = () => {
+    console.log("Game Over");
+    gameStarted = false;
+    this.add.text(350, 250, "Game Over", {
+      fontSize: "64px",
+      fill: "#FFFFFF",
+    });
+  };
+
+  //update the timer display
+  const updateTimer = () => {
+    var remainingTime = Math.max(0, endTime - this.time.now);
+    var seconds = Math.ceil(remainingTime / 1000);
+    timerText.setText("Time: " + seconds);
   };
 }
 
