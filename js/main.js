@@ -29,6 +29,9 @@ function preload() {
   this.load.image("player", "assets/images/default.png");
   this.load.image("coin", "assets/images/coin.png");
   this.load.image("startButton", "assets/images/start.png");
+  //this.load.image("startButton", "assets/images/shop.png");
+  //total coin count and highscore needed to be added along with
+  //shop feature providing different heads
 }
 
 function create() {
