@@ -1,3 +1,9 @@
+/* NOTE: things needed to be added and manage
+  -total coin count and highscore needed to be updated
+  -shop feature providing different heads
+  -else part of function update() needs to be change for velocity to be stoped
+    (the written code works but makes home button unable to be clicked)
+*/
 var config = {
   type: Phaser.AUTO,
   width: 1000,
@@ -29,21 +35,38 @@ function preload() {
   this.load.image("player", "assets/images/default.png");
   this.load.image("coin", "assets/images/coin.png");
   this.load.image("startButton", "assets/images/start.png");
-  this.load.image("startButton", "assets/images/shop.png");
-  //total coin count and highscore needed to be added along with
-  //shop feature providing different heads
+  this.load.image("shopButton", "assets/images/shop.png");
 }
 
 function create() {
-  // Create start button
-  var startButton = this.add.sprite(500, 350, "startButton").setInteractive();
-  startButton.setScale(0.5);
+  var highscore = 0;
+  var Totalcoin = 0;
+  highscore = this.add.text(300, 300, "High Score: " + highscore, {
+    fontSize: "30px",
+    fill: "#FFFFFF",
+  });
+  Totalcoin = this.add.text(805, 60, "Total Coin: " + Totalcoin, {
+    fontSize: "20px",
+    fill: "#FFFFFF",
+  });
 
+  var startButton = this.add.sprite(500, 400, "startButton").setInteractive();
+  var shopButton = this.add.sprite(500, 450, "shopButton").setInteractive();
+  var playerimg = this.add.sprite(100, 600, "player");
+  playerimg.setScale(0.2);
+
+  startButton.setScale(0.5);
+  shopButton.setScale(0.5);
+  highscore.setText("High Score: " + highscore);
   startButton.setInteractive();
 
   // Start game when start button is clicked
   startButton.on("pointerdown", () => {
-    startButton.destroy(); // Remove start button
+    startButton.destroy(); // Remove the images/texts displayed
+    shopButton.destroy();
+    playerimg.destroy();
+    highscore.destroy();
+    Totalcoin.destroy();
     gameStarted = true;
     startGame();
   });
@@ -122,12 +145,28 @@ function create() {
   const endGame = () => {
     console.log("Game Over");
     gameStarted = false;
-    this.add.text(350, 250, "Game Over", {
+    var gameOverText = this.add.text(350, 250, "Game Over", {
       fontSize: "64px",
       fill: "#FFFFFF",
     });
-  };
 
+    var HomeText = this.add.text(450, 350, "Home", {
+      fontSize: "32px",
+      fill: "#FFFFFF",
+      backgroundColor: "#808080",
+      padding: {
+        x: 10,
+        y: 5,
+      },
+      fixedWidth: 100,
+      fixedHeight: 40,
+      align: "center",
+    });
+    HomeText.setInteractive();
+    HomeText.on("pointerdown", () => {
+      this.scene.restart(); // Restart the game
+    });
+  };
   //update the timer display
   const updateTimer = () => {
     var remainingTime = Math.max(0, endTime - this.time.now);
@@ -137,8 +176,8 @@ function create() {
 }
 
 function update() {
+  // Player movement
   if (gameStarted) {
-    // Player movement
     var cursors = this.input.keyboard.createCursorKeys();
     if (cursors.left.isDown) {
       player.setVelocityX(-200);
@@ -152,5 +191,11 @@ function update() {
       player.setVelocityX(0);
       player.setVelocityY(0);
     }
+  } else {
+    // If soon as timer hits 0 player stuck at that exact position
+    // if (this.time.now > endTime) {
+    //   player.setVelocityX(0);
+    //   player.setVelocityY(0);
+    // }
   }
 }
