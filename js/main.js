@@ -35,6 +35,7 @@ function preload() {
   this.load.image("player", "assets/images/default.png");
   this.load.image("coin", "assets/images/coin.png");
   this.load.image("startButton", "assets/images/start.png");
+  this.load.image("timerchallengeButton", "assets/images/timerchallenge.png");
   this.load.image("shopButton", "assets/images/shop.png");
 }
 
@@ -50,19 +51,24 @@ function create() {
     fill: "#FFFFFF",
   });
 
-  var startButton = this.add.sprite(500, 400, "startButton").setInteractive();
+  var startButton = this.add.sprite(500, 350, "startButton").setInteractive();
+  var timerchallengeButton = this.add
+    .sprite(500, 400, "timerchallengeButton")
+    .setInteractive();
   var shopButton = this.add.sprite(500, 450, "shopButton").setInteractive();
   var playerimg = this.add.sprite(100, 600, "player");
-  playerimg.setScale(0.2);
 
+  playerimg.setScale(0.2);
   startButton.setScale(0.5);
+  timerchallengeButton.setScale(0.5);
   shopButton.setScale(0.5);
   highscore.setText("High Score: " + highscore);
   startButton.setInteractive();
 
   // Start game when start button is clicked
-  startButton.on("pointerdown", () => {
+  timerchallengeButton.on("pointerdown", () => {
     startButton.destroy(); // Remove the images/texts displayed
+    timerchallengeButton.destroy();
     shopButton.destroy();
     playerimg.destroy();
     highscore.destroy();
@@ -194,8 +200,8 @@ function update() {
   } else {
     // If soon as timer hits 0 player stuck at that exact position
     // if (this.time.now > endTime) {
-    //   player.setVelocityX(0);
-    //   player.setVelocityY(0);
-    // }
+    //    player.setVelocityX(0);
+    //    player.setVelocityY(0);
+    //  }
   }
 }
