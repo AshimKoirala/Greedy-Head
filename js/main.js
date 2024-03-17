@@ -63,9 +63,18 @@ function create() {
   timerchallengeButton.setScale(0.5);
   shopButton.setScale(0.5);
   highscore.setText("High Score: " + highscore);
-  startButton.setInteractive();
 
-  // Start game when start button is clicked
+  startButton.on("pointerdown", () => {
+    startButton.destroy(); // Remove the images/texts displayed
+    timerchallengeButton.destroy();
+    shopButton.destroy();
+    playerimg.destroy();
+    highscore.destroy();
+    Totalcoin.destroy();
+    gameStarted = true;
+    startgame();
+  });
+  // when timer challenged button is clicked
   timerchallengeButton.on("pointerdown", () => {
     startButton.destroy(); // Remove the images/texts displayed
     timerchallengeButton.destroy();
@@ -74,11 +83,47 @@ function create() {
     highscore.destroy();
     Totalcoin.destroy();
     gameStarted = true;
-    startGame();
+    startTimerChallenge();
   });
 
-  //initialize game
-  const startGame = () => {
+  // when shop button is clicked
+  shopButton.on("pointerdown", () => {
+    startButton.destroy(); // Remove the images/texts displayed
+    timerchallengeButton.destroy();
+    shopButton.destroy();
+    playerimg.destroy();
+    highscore.destroy();
+    Totalcoin.destroy();
+    gameStarted = true;
+    shop();
+  });
+
+  //-----------------Below is the Get started-------------------------------------------
+
+  const startgame = () => {
+    // player sprite
+    player = this.physics.add.sprite(0, 650, "player");
+    player.setScale(0.2);
+    // player physics properties
+    player.setCollideWorldBounds(true);
+
+    // Create initial coin
+    respawnCoin();
+
+    // coin count
+    Totalcoin = 0;
+
+    // score text
+    scoreText = this.add.text(16, 16, "Coin: " + Totalcoin, {
+      fontSize: "32px",
+      fill: "#FFFFFF",
+    });
+    // If player touches coin, score increases and coin reappear in another location
+    this.physics.add.collider(player, coin, collectCoin, null, this);
+  };
+
+  //----------------Below is the TIMER challenge----------------------------------
+  const startTimerChallenge = () => {
     // player sprite
     player = this.physics.add.sprite(0, 650, "player");
     player.setScale(0.2);
