@@ -42,7 +42,7 @@ function preload() {
 function create() {
   var highscore = 0;
   var Totalcoin = 0;
-  highscore = this.add.text(300, 300, "High Score: " + highscore, {
+  highscore = this.add.text(300, 250, "High Score: " + highscore, {
     fontSize: "30px",
     fill: "#FFFFFF",
   });
