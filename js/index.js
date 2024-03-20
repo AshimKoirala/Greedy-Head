@@ -1,5 +1,7 @@
-import { handleStartButton } from "./startButton.js";
-import { handleTimerChallengeButton } from "./timerChallengeButton.js";
+//import { handleStartButton } from "./startButton.js";
+import { startGame } from "./gamelogic.js";
+import { startTimerChallenge } from "./gamelogic.js";
+//import { handleTimerChallengeButton } from "./timerChallengeButton.js";
 
 var config = {
   type: Phaser.AUTO,
@@ -21,12 +23,12 @@ var config = {
 
 var game = new Phaser.Game(config);
 var player;
-var coin;
 var gameStarted = false;
-var timer;
-var gameDuration = 15000;
-var endTime;
-var timerText;
+// var coin;
+// var timer;
+// var gameDuration = 15000;
+// var endTime;
+// var timerText;
 
 function preload() {
   // Load images
@@ -50,8 +52,8 @@ function create() {
     fill: "#FFFFFF",
   });
 
-  handleStartButton(this);
-  handleTimerChallengeButton(this);
+  startGame(this);
+  startTimerChallenge(this);
 }
 
 function update() {
@@ -78,4 +80,3 @@ function update() {
     //  }
   }
 }
-export { preload, create, update };
